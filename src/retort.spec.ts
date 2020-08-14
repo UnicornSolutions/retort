@@ -1,4 +1,4 @@
-import Respond from './Respond';
+import Retort from './retort';
 import RespondError, { Classification } from './RespondError';
 import { ResponseLevel } from './respond.types';
 
@@ -6,12 +6,12 @@ const expectStringifyEqual = (spy, expectedValue) => {
   expect(JSON.stringify(spy.calls.first().args[0])).toEqual(JSON.stringify(expectedValue));
 };
 
-describe('Respond', () => {
+describe('Retort', () => {
   describe('constructor methods', () => {
     it('responseMessage only', () => {
       const responseMessage = 'Test Response Message';
 
-      const riposte = new Respond(responseMessage);
+      const riposte = new Retort(responseMessage);
 
       expect(riposte._classification).toEqual(undefined);
       expect(riposte._responseMessage).toEqual(responseMessage);
@@ -24,7 +24,7 @@ describe('Respond', () => {
       const errorMessage = 'Test Error Message';
 
       const responseErr = new RespondError(errorMessage, Classification.OTHER);
-      const riposte = new Respond(responseErr);
+      const riposte = new Retort(responseErr);
 
       expect(riposte._responseMessage).toEqual(errorMessage);
       expect(riposte._classification).toEqual(Classification.OTHER);
@@ -37,7 +37,7 @@ describe('Respond', () => {
       const errorMessage = 'Test Error Message';
 
       const responseErr = new RespondError(errorMessage);
-      const riposte = new Respond(responseErr);
+      const riposte = new Retort(responseErr);
 
       expect(riposte._responseMessage).toEqual(errorMessage);
       expect(riposte._classification).toEqual(undefined);
@@ -50,7 +50,7 @@ describe('Respond', () => {
       const errorMessage = 'Test Server Error Message';
 
       const err = new Error(errorMessage);
-      const riposte = new Respond(err, Classification.DOWNSTREAM);
+      const riposte = new Retort(err, Classification.DOWNSTREAM);
 
       expect(riposte._responseMessage).toEqual(errorMessage);
       expect(riposte._classification).toEqual(Classification.DOWNSTREAM);
@@ -64,7 +64,7 @@ describe('Respond', () => {
       const errorMessage = 'Test Server Error Message';
 
       const err = new Error(errorMessage);
-      const riposte = new Respond(err, Classification.DOWNSTREAM, loggerMessage);
+      const riposte = new Retort(err, Classification.DOWNSTREAM, loggerMessage);
 
       expect(riposte._responseMessage).toEqual(errorMessage);
       expect(riposte._classification).toEqual(Classification.DOWNSTREAM);
@@ -78,9 +78,9 @@ describe('Respond', () => {
     it('withRespondError Initializer -- Message ONLY on RespondError instantiation', () => {
       const errorMessage = 'Test Error Message';
       const responseErr = new RespondError(errorMessage);
-      const spy = spyOn(Respond, 'withRespondError').and.callThrough();
+      const spy = spyOn(Retort, 'withRespondError').and.callThrough();
 
-      const rip: Respond = Respond.withRespondError(responseErr);
+      const rip: Retort = Retort.withRespondError(responseErr);
 
       expect(spy).toHaveBeenCalledTimes(1);
       expect(spy).toHaveBeenCalledWith(responseErr);
@@ -95,9 +95,9 @@ describe('Respond', () => {
     it('withRespondError Initializer -- Message & Classification on RespondError instantiation', () => {
       const errorMessage = 'Test Error Message';
       const responseErr = new RespondError(errorMessage, Classification.DOWNSTREAM);
-      const spy = spyOn(Respond, 'withRespondError').and.callThrough();
+      const spy = spyOn(Retort, 'withRespondError').and.callThrough();
 
-      const rip = Respond.withRespondError(responseErr);
+      const rip = Retort.withRespondError(responseErr);
 
       expect(spy).toHaveBeenCalledTimes(1);
       expect(spy).toHaveBeenCalledWith(responseErr);
@@ -112,9 +112,9 @@ describe('Respond', () => {
     it('withRespondError Initializer -- Message, Classification & Status Code on RespondError instantiation', () => {
       const errorMessage = 'Test Error Message';
       const responseErr = new RespondError(errorMessage, Classification.VALIDATION, 404);
-      const spy = spyOn(Respond, 'withRespondError').and.callThrough();
+      const spy = spyOn(Retort, 'withRespondError').and.callThrough();
 
-      const rip = Respond.withRespondError(responseErr);
+      const rip = Retort.withRespondError(responseErr);
 
       expect(spy).toHaveBeenCalledTimes(1);
       expect(spy).toHaveBeenCalledWith(responseErr);
@@ -128,9 +128,9 @@ describe('Respond', () => {
 
     it('withResponseMessage Initializer', () => {
       const errorMessage = 'Test Error Message';
-      const spy = spyOn(Respond, 'withResponseMessage').and.callThrough();
+      const spy = spyOn(Retort, 'withResponseMessage').and.callThrough();
 
-      const rip = Respond.withResponseMessage(errorMessage);
+      const rip = Retort.withResponseMessage(errorMessage);
 
       expect(spy).toHaveBeenCalledTimes(1);
       expect(spy).toHaveBeenCalledWith(errorMessage);
@@ -161,12 +161,12 @@ describe('Respond', () => {
             }),
           };
 
-          const badRequestSpy = spyOn(Respond, 'badRequest').and.callThrough();
-          const errorSpy = spyOn(Respond, 'error').and.callThrough();
+          const badRequestSpy = spyOn(Retort, 'badRequest').and.callThrough();
+          const errorSpy = spyOn(Retort, 'error').and.callThrough();
 
           const responseErr = new RespondError(errorMessage);
 
-          const rip = Respond.badRequest(responseErr);
+          const rip = Retort.badRequest(responseErr);
 
           expect(badRequestSpy).toBeCalledTimes(1);
           expect(errorSpy).toBeCalledTimes(1);
@@ -189,12 +189,12 @@ describe('Respond', () => {
             }),
           };
 
-          const badRequestSpy = spyOn(Respond, 'badRequest').and.callThrough();
-          const errorSpy = spyOn(Respond, 'error').and.callThrough();
+          const badRequestSpy = spyOn(Retort, 'badRequest').and.callThrough();
+          const errorSpy = spyOn(Retort, 'error').and.callThrough();
 
           const responseErr = new RespondError(errorMessage, Classification.DATABASE);
 
-          const rip = Respond.badRequest(responseErr);
+          const rip = Retort.badRequest(responseErr);
 
           expect(badRequestSpy).toBeCalledTimes(1);
           expect(errorSpy).toBeCalledTimes(1);
@@ -219,10 +219,10 @@ describe('Respond', () => {
             })
           };
 
-          const badRequestSpy = spyOn(Respond, 'badRequest').and.callThrough();
-          const errorSpy = spyOn(Respond, 'error').and.callThrough();
+          const badRequestSpy = spyOn(Retort, 'badRequest').and.callThrough();
+          const errorSpy = spyOn(Retort, 'error').and.callThrough();
 
-          const rip = Respond.badRequest(respMsg);
+          const rip = Retort.badRequest(respMsg);
 
           expect(badRequestSpy).toBeCalledTimes(1);
           expect(errorSpy).toBeCalledTimes(1);
@@ -245,10 +245,10 @@ describe('Respond', () => {
             })
           };
 
-          const badRequestSpy = spyOn(Respond, 'badRequest').and.callThrough();
-          const errorSpy = spyOn(Respond, 'error').and.callThrough();
+          const badRequestSpy = spyOn(Retort, 'badRequest').and.callThrough();
+          const errorSpy = spyOn(Retort, 'error').and.callThrough();
 
-          const rip = Respond.badRequest(respMsg, Classification.VALIDATION);
+          const rip = Retort.badRequest(respMsg, Classification.VALIDATION);
 
           expect(badRequestSpy).toBeCalledTimes(1);
           expect(errorSpy).toBeCalledTimes(1);
@@ -272,10 +272,10 @@ describe('Respond', () => {
           };
           const err = new Error('Some Error Message');
 
-          const badRequestSpy = spyOn(Respond, 'badRequest').and.callThrough();
-          const errorSpy = spyOn(Respond, 'error').and.callThrough();
+          const badRequestSpy = spyOn(Retort, 'badRequest').and.callThrough();
+          const errorSpy = spyOn(Retort, 'error').and.callThrough();
 
-          const rip = Respond.badRequest(respMsg, Classification.VALIDATION, err);
+          const rip = Retort.badRequest(respMsg, Classification.VALIDATION, err);
 
           expect(badRequestSpy).toBeCalledTimes(1);
           expect(errorSpy).toBeCalledTimes(1);
@@ -300,10 +300,10 @@ describe('Respond', () => {
           };
           const err = new Error('Some Error Message');
 
-          const badRequestSpy = spyOn(Respond, 'badRequest').and.callThrough();
-          const errorSpy = spyOn(Respond, 'error').and.callThrough();
+          const badRequestSpy = spyOn(Retort, 'badRequest').and.callThrough();
+          const errorSpy = spyOn(Retort, 'error').and.callThrough();
 
-          const rip = Respond.badRequest(respMsg, Classification.VALIDATION, err, logMsg);
+          const rip = Retort.badRequest(respMsg, Classification.VALIDATION, err, logMsg);
 
           expect(badRequestSpy).toBeCalledTimes(1);
           expect(errorSpy).toBeCalledTimes(1);
@@ -330,12 +330,12 @@ describe('Respond', () => {
             }),
           };
 
-          const unauthorizedSpy = spyOn(Respond, 'unauthorized').and.callThrough();
-          const errorSpy = spyOn(Respond, 'error').and.callThrough();
+          const unauthorizedSpy = spyOn(Retort, 'unauthorized').and.callThrough();
+          const errorSpy = spyOn(Retort, 'error').and.callThrough();
 
           const responseErr = new RespondError(errorMessage);
 
-          const rip = Respond.unauthorized(responseErr);
+          const rip = Retort.unauthorized(responseErr);
 
           expect(unauthorizedSpy).toBeCalledTimes(1);
           expect(errorSpy).toBeCalledTimes(1);
@@ -358,12 +358,12 @@ describe('Respond', () => {
             }),
           };
 
-          const unauthorizedSpy = spyOn(Respond, 'unauthorized').and.callThrough();
-          const errorSpy = spyOn(Respond, 'error').and.callThrough();
+          const unauthorizedSpy = spyOn(Retort, 'unauthorized').and.callThrough();
+          const errorSpy = spyOn(Retort, 'error').and.callThrough();
 
           const responseErr = new RespondError(errorMessage, Classification.DATABASE);
 
-          const rip = Respond.unauthorized(responseErr);
+          const rip = Retort.unauthorized(responseErr);
 
           expect(unauthorizedSpy).toBeCalledTimes(1);
           expect(errorSpy).toBeCalledTimes(1);
@@ -388,10 +388,10 @@ describe('Respond', () => {
             })
           };
 
-          const unauthorizedSpy = spyOn(Respond, 'unauthorized').and.callThrough();
-          const errorSpy = spyOn(Respond, 'error').and.callThrough();
+          const unauthorizedSpy = spyOn(Retort, 'unauthorized').and.callThrough();
+          const errorSpy = spyOn(Retort, 'error').and.callThrough();
 
-          const rip = Respond.unauthorized(respMsg);
+          const rip = Retort.unauthorized(respMsg);
 
           expect(unauthorizedSpy).toBeCalledTimes(1);
           expect(errorSpy).toBeCalledTimes(1);
@@ -414,10 +414,10 @@ describe('Respond', () => {
             })
           };
 
-          const unauthorizedSpy = spyOn(Respond, 'unauthorized').and.callThrough();
-          const errorSpy = spyOn(Respond, 'error').and.callThrough();
+          const unauthorizedSpy = spyOn(Retort, 'unauthorized').and.callThrough();
+          const errorSpy = spyOn(Retort, 'error').and.callThrough();
 
-          const rip = Respond.unauthorized(respMsg, Classification.VALIDATION);
+          const rip = Retort.unauthorized(respMsg, Classification.VALIDATION);
 
           expect(unauthorizedSpy).toBeCalledTimes(1);
           expect(errorSpy).toBeCalledTimes(1);
@@ -441,10 +441,10 @@ describe('Respond', () => {
           };
           const err = new Error('Some Error Message');
 
-          const unauthorizedSpy = spyOn(Respond, 'unauthorized').and.callThrough();
-          const errorSpy = spyOn(Respond, 'error').and.callThrough();
+          const unauthorizedSpy = spyOn(Retort, 'unauthorized').and.callThrough();
+          const errorSpy = spyOn(Retort, 'error').and.callThrough();
 
-          const rip = Respond.unauthorized(respMsg, Classification.VALIDATION, err);
+          const rip = Retort.unauthorized(respMsg, Classification.VALIDATION, err);
 
           expect(unauthorizedSpy).toBeCalledTimes(1);
           expect(errorSpy).toBeCalledTimes(1);
@@ -469,10 +469,10 @@ describe('Respond', () => {
           };
           const err = new Error('Some Error Message');
 
-          const unauthorizedSpy = spyOn(Respond, 'unauthorized').and.callThrough();
-          const errorSpy = spyOn(Respond, 'error').and.callThrough();
+          const unauthorizedSpy = spyOn(Retort, 'unauthorized').and.callThrough();
+          const errorSpy = spyOn(Retort, 'error').and.callThrough();
 
-          const rip = Respond.unauthorized(respMsg, Classification.VALIDATION, err, logMsg);
+          const rip = Retort.unauthorized(respMsg, Classification.VALIDATION, err, logMsg);
 
           expect(unauthorizedSpy).toBeCalledTimes(1);
           expect(errorSpy).toBeCalledTimes(1);
@@ -499,12 +499,12 @@ describe('Respond', () => {
             }),
           };
 
-          const forbiddenSpy = spyOn(Respond, 'forbidden').and.callThrough();
-          const errorSpy = spyOn(Respond, 'error').and.callThrough();
+          const forbiddenSpy = spyOn(Retort, 'forbidden').and.callThrough();
+          const errorSpy = spyOn(Retort, 'error').and.callThrough();
 
           const responseErr = new RespondError(errorMessage);
 
-          const rip = Respond.forbidden(responseErr);
+          const rip = Retort.forbidden(responseErr);
 
           expect(forbiddenSpy).toBeCalledTimes(1);
           expect(errorSpy).toBeCalledTimes(1);
@@ -527,12 +527,12 @@ describe('Respond', () => {
             }),
           };
 
-          const forbiddenSpy = spyOn(Respond, 'forbidden').and.callThrough();
-          const errorSpy = spyOn(Respond, 'error').and.callThrough();
+          const forbiddenSpy = spyOn(Retort, 'forbidden').and.callThrough();
+          const errorSpy = spyOn(Retort, 'error').and.callThrough();
 
           const responseErr = new RespondError(errorMessage, Classification.DATABASE);
 
-          const rip = Respond.forbidden(responseErr);
+          const rip = Retort.forbidden(responseErr);
 
           expect(forbiddenSpy).toBeCalledTimes(1);
           expect(errorSpy).toBeCalledTimes(1);
@@ -557,10 +557,10 @@ describe('Respond', () => {
             })
           };
 
-          const forbiddenSpy = spyOn(Respond, 'forbidden').and.callThrough();
-          const errorSpy = spyOn(Respond, 'error').and.callThrough();
+          const forbiddenSpy = spyOn(Retort, 'forbidden').and.callThrough();
+          const errorSpy = spyOn(Retort, 'error').and.callThrough();
 
-          const rip = Respond.forbidden(respMsg);
+          const rip = Retort.forbidden(respMsg);
 
           expect(forbiddenSpy).toBeCalledTimes(1);
           expect(errorSpy).toBeCalledTimes(1);
@@ -583,10 +583,10 @@ describe('Respond', () => {
             })
           };
 
-          const forbiddenSpy = spyOn(Respond, 'forbidden').and.callThrough();
-          const errorSpy = spyOn(Respond, 'error').and.callThrough();
+          const forbiddenSpy = spyOn(Retort, 'forbidden').and.callThrough();
+          const errorSpy = spyOn(Retort, 'error').and.callThrough();
 
-          const rip = Respond.forbidden(respMsg, Classification.VALIDATION);
+          const rip = Retort.forbidden(respMsg, Classification.VALIDATION);
 
           expect(forbiddenSpy).toBeCalledTimes(1);
           expect(errorSpy).toBeCalledTimes(1);
@@ -610,10 +610,10 @@ describe('Respond', () => {
           };
           const err = new Error('Some Error Message');
 
-          const forbiddenSpy = spyOn(Respond, 'forbidden').and.callThrough();
-          const errorSpy = spyOn(Respond, 'error').and.callThrough();
+          const forbiddenSpy = spyOn(Retort, 'forbidden').and.callThrough();
+          const errorSpy = spyOn(Retort, 'error').and.callThrough();
 
-          const rip = Respond.forbidden(respMsg, Classification.VALIDATION, err);
+          const rip = Retort.forbidden(respMsg, Classification.VALIDATION, err);
 
           expect(forbiddenSpy).toBeCalledTimes(1);
           expect(errorSpy).toBeCalledTimes(1);
@@ -638,10 +638,10 @@ describe('Respond', () => {
           };
           const err = new Error('Some Error Message');
 
-          const forbiddenSpy = spyOn(Respond, 'forbidden').and.callThrough();
-          const errorSpy = spyOn(Respond, 'error').and.callThrough();
+          const forbiddenSpy = spyOn(Retort, 'forbidden').and.callThrough();
+          const errorSpy = spyOn(Retort, 'error').and.callThrough();
 
-          const rip = Respond.forbidden(respMsg, Classification.VALIDATION, err, logMsg);
+          const rip = Retort.forbidden(respMsg, Classification.VALIDATION, err, logMsg);
 
           expect(forbiddenSpy).toBeCalledTimes(1);
           expect(errorSpy).toBeCalledTimes(1);
@@ -668,12 +668,12 @@ describe('Respond', () => {
             }),
           };
 
-          const notFoundSpy = spyOn(Respond, 'notFound').and.callThrough();
-          const errorSpy = spyOn(Respond, 'error').and.callThrough();
+          const notFoundSpy = spyOn(Retort, 'notFound').and.callThrough();
+          const errorSpy = spyOn(Retort, 'error').and.callThrough();
 
           const responseErr = new RespondError(errorMessage);
 
-          const rip = Respond.notFound(responseErr);
+          const rip = Retort.notFound(responseErr);
 
           expect(notFoundSpy).toBeCalledTimes(1);
           expect(errorSpy).toBeCalledTimes(1);
@@ -696,12 +696,12 @@ describe('Respond', () => {
             }),
           };
 
-          const notFoundSpy = spyOn(Respond, 'notFound').and.callThrough();
-          const errorSpy = spyOn(Respond, 'error').and.callThrough();
+          const notFoundSpy = spyOn(Retort, 'notFound').and.callThrough();
+          const errorSpy = spyOn(Retort, 'error').and.callThrough();
 
           const responseErr = new RespondError(errorMessage, Classification.DATABASE);
 
-          const rip = Respond.notFound(responseErr);
+          const rip = Retort.notFound(responseErr);
 
           expect(notFoundSpy).toBeCalledTimes(1);
           expect(errorSpy).toBeCalledTimes(1);
@@ -726,10 +726,10 @@ describe('Respond', () => {
             })
           };
 
-          const notFoundSpy = spyOn(Respond, 'notFound').and.callThrough();
-          const errorSpy = spyOn(Respond, 'error').and.callThrough();
+          const notFoundSpy = spyOn(Retort, 'notFound').and.callThrough();
+          const errorSpy = spyOn(Retort, 'error').and.callThrough();
 
-          const rip = Respond.notFound(respMsg);
+          const rip = Retort.notFound(respMsg);
 
           expect(notFoundSpy).toBeCalledTimes(1);
           expect(errorSpy).toBeCalledTimes(1);
@@ -752,10 +752,10 @@ describe('Respond', () => {
             })
           };
 
-          const notFoundSpy = spyOn(Respond, 'notFound').and.callThrough();
-          const errorSpy = spyOn(Respond, 'error').and.callThrough();
+          const notFoundSpy = spyOn(Retort, 'notFound').and.callThrough();
+          const errorSpy = spyOn(Retort, 'error').and.callThrough();
 
-          const rip = Respond.notFound(respMsg, Classification.VALIDATION);
+          const rip = Retort.notFound(respMsg, Classification.VALIDATION);
 
           expect(notFoundSpy).toBeCalledTimes(1);
           expect(errorSpy).toBeCalledTimes(1);
@@ -779,10 +779,10 @@ describe('Respond', () => {
           };
           const err = new Error('Some Error Message');
 
-          const notFoundSpy = spyOn(Respond, 'notFound').and.callThrough();
-          const errorSpy = spyOn(Respond, 'error').and.callThrough();
+          const notFoundSpy = spyOn(Retort, 'notFound').and.callThrough();
+          const errorSpy = spyOn(Retort, 'error').and.callThrough();
 
-          const rip = Respond.notFound(respMsg, Classification.VALIDATION, err);
+          const rip = Retort.notFound(respMsg, Classification.VALIDATION, err);
 
           expect(notFoundSpy).toBeCalledTimes(1);
           expect(errorSpy).toBeCalledTimes(1);
@@ -807,10 +807,10 @@ describe('Respond', () => {
           };
           const err = new Error('Some Error Message');
 
-          const notFoundSpy = spyOn(Respond, 'notFound').and.callThrough();
-          const errorSpy = spyOn(Respond, 'error').and.callThrough();
+          const notFoundSpy = spyOn(Retort, 'notFound').and.callThrough();
+          const errorSpy = spyOn(Retort, 'error').and.callThrough();
 
-          const rip = Respond.notFound(respMsg, Classification.VALIDATION, err, logMsg);
+          const rip = Retort.notFound(respMsg, Classification.VALIDATION, err, logMsg);
 
           expect(notFoundSpy).toBeCalledTimes(1);
           expect(errorSpy).toBeCalledTimes(1);
@@ -837,12 +837,12 @@ describe('Respond', () => {
             }),
           };
 
-          const conflictSpy = spyOn(Respond, 'conflict').and.callThrough();
-          const errorSpy = spyOn(Respond, 'error').and.callThrough();
+          const conflictSpy = spyOn(Retort, 'conflict').and.callThrough();
+          const errorSpy = spyOn(Retort, 'error').and.callThrough();
 
           const responseErr = new RespondError(errorMessage);
 
-          const rip = Respond.conflict(responseErr);
+          const rip = Retort.conflict(responseErr);
 
           expect(conflictSpy).toBeCalledTimes(1);
           expect(errorSpy).toBeCalledTimes(1);
@@ -865,12 +865,12 @@ describe('Respond', () => {
             }),
           };
 
-          const conflictSpy = spyOn(Respond, 'conflict').and.callThrough();
-          const errorSpy = spyOn(Respond, 'error').and.callThrough();
+          const conflictSpy = spyOn(Retort, 'conflict').and.callThrough();
+          const errorSpy = spyOn(Retort, 'error').and.callThrough();
 
           const responseErr = new RespondError(errorMessage, Classification.DATABASE);
 
-          const rip = Respond.conflict(responseErr);
+          const rip = Retort.conflict(responseErr);
 
           expect(conflictSpy).toBeCalledTimes(1);
           expect(errorSpy).toBeCalledTimes(1);
@@ -895,10 +895,10 @@ describe('Respond', () => {
             })
           };
 
-          const conflictSpy = spyOn(Respond, 'conflict').and.callThrough();
-          const errorSpy = spyOn(Respond, 'error').and.callThrough();
+          const conflictSpy = spyOn(Retort, 'conflict').and.callThrough();
+          const errorSpy = spyOn(Retort, 'error').and.callThrough();
 
-          const rip = Respond.conflict(respMsg);
+          const rip = Retort.conflict(respMsg);
 
           expect(conflictSpy).toBeCalledTimes(1);
           expect(errorSpy).toBeCalledTimes(1);
@@ -921,10 +921,10 @@ describe('Respond', () => {
             })
           };
 
-          const conflictSpy = spyOn(Respond, 'conflict').and.callThrough();
-          const errorSpy = spyOn(Respond, 'error').and.callThrough();
+          const conflictSpy = spyOn(Retort, 'conflict').and.callThrough();
+          const errorSpy = spyOn(Retort, 'error').and.callThrough();
 
-          const rip = Respond.conflict(respMsg, Classification.VALIDATION);
+          const rip = Retort.conflict(respMsg, Classification.VALIDATION);
 
           expect(conflictSpy).toBeCalledTimes(1);
           expect(errorSpy).toBeCalledTimes(1);
@@ -948,10 +948,10 @@ describe('Respond', () => {
           };
           const err = new Error('Some Error Message');
 
-          const conflictSpy = spyOn(Respond, 'conflict').and.callThrough();
-          const errorSpy = spyOn(Respond, 'error').and.callThrough();
+          const conflictSpy = spyOn(Retort, 'conflict').and.callThrough();
+          const errorSpy = spyOn(Retort, 'error').and.callThrough();
 
-          const rip = Respond.conflict(respMsg, Classification.VALIDATION, err);
+          const rip = Retort.conflict(respMsg, Classification.VALIDATION, err);
 
           expect(conflictSpy).toBeCalledTimes(1);
           expect(errorSpy).toBeCalledTimes(1);
@@ -976,10 +976,10 @@ describe('Respond', () => {
           };
           const err = new Error('Some Error Message');
 
-          const conflictSpy = spyOn(Respond, 'conflict').and.callThrough();
-          const errorSpy = spyOn(Respond, 'error').and.callThrough();
+          const conflictSpy = spyOn(Retort, 'conflict').and.callThrough();
+          const errorSpy = spyOn(Retort, 'error').and.callThrough();
 
-          const rip = Respond.conflict(respMsg, Classification.VALIDATION, err, logMsg);
+          const rip = Retort.conflict(respMsg, Classification.VALIDATION, err, logMsg);
 
           expect(conflictSpy).toBeCalledTimes(1);
           expect(errorSpy).toBeCalledTimes(1);
@@ -1006,12 +1006,12 @@ describe('Respond', () => {
             }),
           };
 
-          const internalServerErrorSpy = spyOn(Respond, 'internalServerError').and.callThrough();
-          const errorSpy = spyOn(Respond, 'error').and.callThrough();
+          const internalServerErrorSpy = spyOn(Retort, 'internalServerError').and.callThrough();
+          const errorSpy = spyOn(Retort, 'error').and.callThrough();
 
           const responseErr = new RespondError(errorMessage);
 
-          const rip = Respond.internalServerError(responseErr);
+          const rip = Retort.internalServerError(responseErr);
 
           expect(internalServerErrorSpy).toBeCalledTimes(1);
           expect(errorSpy).toBeCalledTimes(1);
@@ -1034,12 +1034,12 @@ describe('Respond', () => {
             }),
           };
 
-          const internalServerErrorSpy = spyOn(Respond, 'internalServerError').and.callThrough();
-          const errorSpy = spyOn(Respond, 'error').and.callThrough();
+          const internalServerErrorSpy = spyOn(Retort, 'internalServerError').and.callThrough();
+          const errorSpy = spyOn(Retort, 'error').and.callThrough();
 
           const responseErr = new RespondError(errorMessage, Classification.DATABASE);
 
-          const rip = Respond.internalServerError(responseErr);
+          const rip = Retort.internalServerError(responseErr);
 
           expect(internalServerErrorSpy).toBeCalledTimes(1);
           expect(errorSpy).toBeCalledTimes(1);
@@ -1064,10 +1064,10 @@ describe('Respond', () => {
             })
           };
 
-          const internalServerErrorSpy = spyOn(Respond, 'internalServerError').and.callThrough();
-          const errorSpy = spyOn(Respond, 'error').and.callThrough();
+          const internalServerErrorSpy = spyOn(Retort, 'internalServerError').and.callThrough();
+          const errorSpy = spyOn(Retort, 'error').and.callThrough();
 
-          const rip = Respond.internalServerError(respMsg);
+          const rip = Retort.internalServerError(respMsg);
 
           expect(internalServerErrorSpy).toBeCalledTimes(1);
           expect(errorSpy).toBeCalledTimes(1);
@@ -1090,10 +1090,10 @@ describe('Respond', () => {
             })
           };
 
-          const internalServerErrorSpy = spyOn(Respond, 'internalServerError').and.callThrough();
-          const errorSpy = spyOn(Respond, 'error').and.callThrough();
+          const internalServerErrorSpy = spyOn(Retort, 'internalServerError').and.callThrough();
+          const errorSpy = spyOn(Retort, 'error').and.callThrough();
 
-          const rip = Respond.internalServerError(respMsg, Classification.VALIDATION);
+          const rip = Retort.internalServerError(respMsg, Classification.VALIDATION);
 
           expect(internalServerErrorSpy).toBeCalledTimes(1);
           expect(errorSpy).toBeCalledTimes(1);
@@ -1117,10 +1117,10 @@ describe('Respond', () => {
           };
           const err = new Error('Some Error Message');
 
-          const internalServerErrorSpy = spyOn(Respond, 'internalServerError').and.callThrough();
-          const errorSpy = spyOn(Respond, 'error').and.callThrough();
+          const internalServerErrorSpy = spyOn(Retort, 'internalServerError').and.callThrough();
+          const errorSpy = spyOn(Retort, 'error').and.callThrough();
 
-          const rip = Respond.internalServerError(respMsg, Classification.VALIDATION, err);
+          const rip = Retort.internalServerError(respMsg, Classification.VALIDATION, err);
 
           expect(internalServerErrorSpy).toBeCalledTimes(1);
           expect(errorSpy).toBeCalledTimes(1);
@@ -1145,10 +1145,10 @@ describe('Respond', () => {
           };
           const err = new Error('Some Error Message');
 
-          const internalServerErrorSpy = spyOn(Respond, 'internalServerError').and.callThrough();
-          const errorSpy = spyOn(Respond, 'error').and.callThrough();
+          const internalServerErrorSpy = spyOn(Retort, 'internalServerError').and.callThrough();
+          const errorSpy = spyOn(Retort, 'error').and.callThrough();
 
-          const rip = Respond.internalServerError(respMsg, Classification.VALIDATION, err, logMsg);
+          const rip = Retort.internalServerError(respMsg, Classification.VALIDATION, err, logMsg);
 
           expect(internalServerErrorSpy).toBeCalledTimes(1);
           expect(errorSpy).toBeCalledTimes(1);
@@ -1175,9 +1175,9 @@ describe('Respond', () => {
           }),
         };
 
-        const okSpy = spyOn(Respond, 'ok').and.callThrough();
+        const okSpy = spyOn(Retort, 'ok').and.callThrough();
 
-        const rip = Respond.ok();
+        const rip = Retort.ok();
 
         expect(okSpy).toBeCalledTimes(1);
         expect(rip).toEqual(returnObj);
@@ -1199,9 +1199,9 @@ describe('Respond', () => {
           }),
         };
 
-        const okSpy = spyOn(Respond, 'ok').and.callThrough();
+        const okSpy = spyOn(Retort, 'ok').and.callThrough();
 
-        const rip = Respond.ok(respMessage);
+        const rip = Retort.ok(respMessage);
 
         expect(okSpy).toBeCalledTimes(1);
         expect(okSpy).toBeCalledWith(respMessage);
@@ -1227,9 +1227,9 @@ describe('Respond', () => {
           }),
         };
 
-        const okSpy = spyOn(Respond, 'ok').and.callThrough();
+        const okSpy = spyOn(Retort, 'ok').and.callThrough();
 
-        const rip = Respond.ok(respBod);
+        const rip = Retort.ok(respBod);
 
         expect(okSpy).toBeCalledTimes(1);
         expect(okSpy).toBeCalledWith(respBod);
@@ -1256,9 +1256,9 @@ describe('Respond', () => {
           }),
         };
 
-        const okSpy = spyOn(Respond, 'ok').and.callThrough();
+        const okSpy = spyOn(Retort, 'ok').and.callThrough();
 
-        const rip = Respond.ok(respBod, respMessage);
+        const rip = Retort.ok(respBod, respMessage);
 
         expect(okSpy).toBeCalledTimes(1);
         expect(okSpy).toBeCalledWith(respBod, respMessage);
@@ -1283,9 +1283,9 @@ describe('Respond', () => {
           }),
         };
 
-        const createdSpy = spyOn(Respond, 'created').and.callThrough();
+        const createdSpy = spyOn(Retort, 'created').and.callThrough();
 
-        const rip = Respond.created();
+        const rip = Retort.created();
 
         expect(createdSpy).toBeCalledTimes(1);
         expect(rip).toEqual(returnObj);
@@ -1307,9 +1307,9 @@ describe('Respond', () => {
           }),
         };
 
-        const createdSpy = spyOn(Respond, 'created').and.callThrough();
+        const createdSpy = spyOn(Retort, 'created').and.callThrough();
 
-        const rip = Respond.created(respMessage);
+        const rip = Retort.created(respMessage);
 
         expect(createdSpy).toBeCalledTimes(1);
         expect(createdSpy).toBeCalledWith(respMessage);
@@ -1335,9 +1335,9 @@ describe('Respond', () => {
           }),
         };
 
-        const createdSpy = spyOn(Respond, 'created').and.callThrough();
+        const createdSpy = spyOn(Retort, 'created').and.callThrough();
 
-        const rip = Respond.created(respBod);
+        const rip = Retort.created(respBod);
 
         expect(createdSpy).toBeCalledTimes(1);
         expect(createdSpy).toBeCalledWith(respBod);
@@ -1364,9 +1364,9 @@ describe('Respond', () => {
           }),
         };
 
-        const createdSpy = spyOn(Respond, 'created').and.callThrough();
+        const createdSpy = spyOn(Retort, 'created').and.callThrough();
 
-        const rip = Respond.created(respBod, respMessage);
+        const rip = Retort.created(respBod, respMessage);
 
         expect(createdSpy).toBeCalledTimes(1);
         expect(createdSpy).toBeCalledWith(respBod, respMessage);
@@ -1391,9 +1391,9 @@ describe('Respond', () => {
           }),
         };
 
-        const noContentSpy = spyOn(Respond, 'noContent').and.callThrough();
+        const noContentSpy = spyOn(Retort, 'noContent').and.callThrough();
 
-        const rip = Respond.noContent();
+        const rip = Retort.noContent();
 
         expect(noContentSpy).toBeCalledTimes(1);
         expect(rip).toEqual(returnObj);
@@ -1415,9 +1415,9 @@ describe('Respond', () => {
           }),
         };
 
-        const noContentSpy = spyOn(Respond, 'noContent').and.callThrough();
+        const noContentSpy = spyOn(Retort, 'noContent').and.callThrough();
 
-        const rip = Respond.noContent(respMessage);
+        const rip = Retort.noContent(respMessage);
 
         expect(noContentSpy).toBeCalledTimes(1);
         expect(noContentSpy).toBeCalledWith(respMessage);
@@ -1443,9 +1443,9 @@ describe('Respond', () => {
           }),
         };
 
-        const noContentSpy = spyOn(Respond, 'noContent').and.callThrough();
+        const noContentSpy = spyOn(Retort, 'noContent').and.callThrough();
 
-        const rip = Respond.noContent(respBod);
+        const rip = Retort.noContent(respBod);
 
         expect(noContentSpy).toBeCalledTimes(1);
         expect(noContentSpy).toBeCalledWith(respBod);
@@ -1472,9 +1472,9 @@ describe('Respond', () => {
           }),
         };
 
-        const noContentSpy = spyOn(Respond, 'noContent').and.callThrough();
+        const noContentSpy = spyOn(Retort, 'noContent').and.callThrough();
 
-        const rip = Respond.noContent(respBod, respMessage);
+        const rip = Retort.noContent(respBod, respMessage);
 
         expect(noContentSpy).toBeCalledTimes(1);
         expect(noContentSpy).toBeCalledWith(respBod, respMessage);
@@ -1499,9 +1499,9 @@ describe('Respond', () => {
           }),
         };
 
-        const notModifiedSpy = spyOn(Respond, 'notModified').and.callThrough();
+        const notModifiedSpy = spyOn(Retort, 'notModified').and.callThrough();
 
-        const rip = Respond.notModified();
+        const rip = Retort.notModified();
 
         expect(notModifiedSpy).toBeCalledTimes(1);
         expect(rip).toEqual(returnObj);
@@ -1523,9 +1523,9 @@ describe('Respond', () => {
           }),
         };
 
-        const notModifiedSpy = spyOn(Respond, 'notModified').and.callThrough();
+        const notModifiedSpy = spyOn(Retort, 'notModified').and.callThrough();
 
-        const rip = Respond.notModified(respMessage);
+        const rip = Retort.notModified(respMessage);
 
         expect(notModifiedSpy).toBeCalledTimes(1);
         expect(notModifiedSpy).toBeCalledWith(respMessage);
@@ -1551,9 +1551,9 @@ describe('Respond', () => {
           }),
         };
 
-        const notModifiedSpy = spyOn(Respond, 'notModified').and.callThrough();
+        const notModifiedSpy = spyOn(Retort, 'notModified').and.callThrough();
 
-        const rip = Respond.notModified(respBod);
+        const rip = Retort.notModified(respBod);
 
         expect(notModifiedSpy).toBeCalledTimes(1);
         expect(notModifiedSpy).toBeCalledWith(respBod);
@@ -1580,9 +1580,9 @@ describe('Respond', () => {
           }),
         };
 
-        const notModifiedSpy = spyOn(Respond, 'notModified').and.callThrough();
+        const notModifiedSpy = spyOn(Retort, 'notModified').and.callThrough();
 
-        const rip = Respond.notModified(respBod, respMessage);
+        const rip = Retort.notModified(respBod, respMessage);
 
         expect(notModifiedSpy).toBeCalledTimes(1);
         expect(notModifiedSpy).toBeCalledWith(respBod, respMessage);
@@ -1591,7 +1591,7 @@ describe('Respond', () => {
     });
   });
 
-  describe('Respond', () => {
+  describe('Retort', () => {
     it('With Response Body ONLY', () => {
       const respBod = {
         prop1: 'some prop value',
@@ -1617,8 +1617,8 @@ describe('Respond', () => {
         })
       };
 
-      const sendSpy = spyOn(Respond, 'send').and.callThrough();
-      const rip = Respond.send(respBod);
+      const sendSpy = spyOn(Retort, 'send').and.callThrough();
+      const rip = Retort.send(respBod);
 
       expect(sendSpy).toHaveBeenCalledTimes(1);
       expect(rip).toEqual(returnObj);
@@ -1646,8 +1646,8 @@ describe('Respond', () => {
         })
       };
 
-      const sendSpy = spyOn(Respond, 'send').and.callThrough();
-      const rip = Respond.send(respBod, 418);
+      const sendSpy = spyOn(Retort, 'send').and.callThrough();
+      const rip = Retort.send(respBod, 418);
 
       expect(sendSpy).toHaveBeenCalledTimes(1);
       expect(rip).toEqual(returnObj);
@@ -1675,8 +1675,8 @@ describe('Respond', () => {
         })
       };
 
-      const sendSpy = spyOn(Respond, 'send').and.callThrough();
-      const rip = Respond.send(respBod, 418, ResponseLevel.ERROR);
+      const sendSpy = spyOn(Retort, 'send').and.callThrough();
+      const rip = Retort.send(respBod, 418, ResponseLevel.ERROR);
 
       expect(sendSpy).toHaveBeenCalledTimes(1);
       expect(rip).toEqual(returnObj);
@@ -1700,8 +1700,8 @@ describe('Respond', () => {
         })
       };
 
-      const sendSpy = spyOn(Respond, 'send').and.callThrough();
-      const rip = Respond.send(respMessage, 226);
+      const sendSpy = spyOn(Retort, 'send').and.callThrough();
+      const rip = Retort.send(respMessage, 226);
 
       expect(sendSpy).toHaveBeenCalledTimes(1);
       expect(rip).toEqual(returnObj);
@@ -1724,8 +1724,8 @@ describe('Respond', () => {
         })
       };
 
-      const sendSpy = spyOn(Respond, 'send').and.callThrough();
-      const rip = Respond.send(respMessage, 302, ResponseLevel.INFO);
+      const sendSpy = spyOn(Retort, 'send').and.callThrough();
+      const rip = Retort.send(respMessage, 302, ResponseLevel.INFO);
 
       expect(sendSpy).toHaveBeenCalledTimes(1);
       expect(rip).toEqual(returnObj);

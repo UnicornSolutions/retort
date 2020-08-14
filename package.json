@@ -1,5 +1,5 @@
 {
-  "name": "retorrt",
+  "name": "retort",
   "version": "0.0.0",
   "description": "module for common response and logging",
   "main": "index.ts",
@@ -24,14 +24,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/darthelit/response-module.git"
+    "url": "git+https://github.com/UnicornSolutions/retort.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/darthelit/response-module/issues"
+    "url": "https://github.com/UnicornSolutions/retort/issues"
   },
-  "homepage": "https://github.com/darthelit/response-module#readme",
+  "homepage": "https://github.com/UnicornSolutions/retort#readme",
   "dependencies": {
     "@typescript-eslint/eslint-plugin": "^2.10.0",
     "@typescript-eslint/parser": "^2.10.0",

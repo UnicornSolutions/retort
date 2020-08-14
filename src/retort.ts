@@ -35,7 +35,7 @@ const buildResponse = (responseBody: any, httpCode?: number): Response => {
   };
 };
 
-class Respond {
+class Retort {
   _responseMessage: string;
   _classification: Classification;
   _error: RespondError | Error;
@@ -66,11 +66,11 @@ class Respond {
   }
 
   public static withRespondError(error: RespondError) {
-    return new Respond(error);
+    return new Retort(error);
   }
 
   public static withResponseMessage(responseMessage: string) {
-    return new Respond(responseMessage);
+    return new Retort(responseMessage);
   }
 
   public static send(responseMessage: string, httpCode: number)
@@ -118,7 +118,7 @@ class Respond {
     } else if (RespondErrOrResp instanceof RespondError) {
       const obpErr = RespondErrOrResp;
       obpErr.statusCode = 400;
-      return Respond.error(obpErr);
+      return Retort.error(obpErr);
     }
   }
 
@@ -138,7 +138,7 @@ class Respond {
     } else if (RespondErrOrResp instanceof RespondError) {
       const obpErr = RespondErrOrResp;
       obpErr.statusCode = 401;
-      return Respond.error(obpErr);
+      return Retort.error(obpErr);
     }
   }
 
@@ -158,7 +158,7 @@ class Respond {
     } else if (RespondErrOrResp instanceof RespondError) {
       const obpErr = RespondErrOrResp;
       obpErr.statusCode = 403;
-      return Respond.error(obpErr);
+      return Retort.error(obpErr);
     }
   }
 
@@ -178,7 +178,7 @@ class Respond {
     } else if (RespondErrOrResp instanceof RespondError) {
       const obpErr = RespondErrOrResp;
       obpErr.statusCode = 404;
-      return Respond.error(obpErr);
+      return Retort.error(obpErr);
     }
   }
 
@@ -198,7 +198,7 @@ class Respond {
     } else if (RespondErrOrResp instanceof RespondError) {
       const obpErr = RespondErrOrResp;
       obpErr.statusCode = 409;
-      return Respond.error(obpErr);
+      return Retort.error(obpErr);
     }
   }
 
@@ -218,7 +218,7 @@ class Respond {
     } else if (RespondErrOrResp instanceof RespondError) {
       const obpErr = RespondErrOrResp;
       obpErr.statusCode = 500;
-      return Respond.error(obpErr);
+      return Retort.error(obpErr);
     }
   }
 
@@ -318,4 +318,4 @@ class Respond {
   }
 }
 
-export default Respond;
+export default Retort;
