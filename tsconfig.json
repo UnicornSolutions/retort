@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "ES2017",
+    "outDir": "dist",
+    "lib": ["es2017"],
+    "sourceMap": false,
+    "rootDir": "src",
+    "declaration": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "experimentalDecorators": true
+  },
+  "exclude": ["node_modules"]
+}
